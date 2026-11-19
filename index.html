@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LKPD: Manajemen Server VPS AWS - Fase 1</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --accent: #2563eb;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #cbd5e1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 24px 16px 60px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: var(--card);
+      padding: 14px 20px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .toolbar-title {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 1rem;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      border: none;
+      border-radius: 6px;
+      padding: 9px 16px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-print {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-print:hover {
+      background: var(--primary);
+    }
+
+    .btn-reset {
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .btn-reset:hover {
+      background: #cbd5e1;
+    }
+
+    .sheet {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      position: relative;
+    }
+
+    .header-banner {
+      border-bottom: 3px solid var(--primary);
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+    }
+
+    .header-banner h1 {
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px 24px;
+      margin-bottom: 24px;
+      background: #f8fafc;
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .field-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .field-row label {
+      font-weight: 600;
+      min-width: 85px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-family: inherit;
+      font-size: 0.92rem;
+      color: var(--text);
+      background: #fff;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    h2.phase-title {
+      font-size: 1.15rem;
+      color: var(--primary);
+      margin-bottom: 8px;
+      padding-left: 10px;
+      border-left: 4px solid var(--accent);
+    }
+
+    p.desc {
+      color: #334155;
+      margin-bottom: 14px;
+      font-size: 0.95rem;
+    }
+
+    .cards-2x2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .box-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      background: #fcfcfd;
+    }
+
+    .box-card h3 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+      color: #0f172a;
+    }
+
+    .footer-note {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--muted);
+      border-top: 1px dashed var(--border);
+      padding-top: 10px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 680px) {
+      .meta-grid,
+      .cards-2x2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+      .toolbar {
+        display: none;
+      }
+      .sheet {
+        box-shadow: none;
+        border: 1px solid #94a3b8;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="toolbar">
+      <div class="toolbar-title">LKPD Interaktif — Manajemen Server VPS AWS (Fase 1)</div>
+      <div class="btn-group">
+        <button class="btn-reset" type="button" onclick="resetForm()">Reset Isian</button>
+        <button class="btn-print" type="button" onclick="window.print()">Cetak / Simpan PDF</button>
+      </div>
+    </div>
+
+    <section class="sheet">
+      <div class="header-banner">
+        <h1>LKPD: Manajemen Server VPS AWS</h1>
+      </div>
+
+      <div class="meta-grid">
+        <div class="field-row">
+          <label for="nama">Nama</label>
+          <span>:</span>
+          <input id="nama" type="text" value="Fajrillah Syifatul Jannah" />
+        </div>
+        <div class="field-row">
+          <label for="tanggal">Tanggal</label>
+          <span>:</span>
+          <input id="tanggal" type="date" value="2026-11-19" />
+        </div>
+        <div class="field-row">
+          <label for="kelas">Kelas</label>
+          <span>:</span>
+          <input id="kelas" type="text" value="XI RPL 1" />
+        </div>
+        <div class="field-row">
+          <label for="instruktur">Instruktur</label>
+          <span>:</span>
+          <input id="instruktur" type="text" value="Pak Asep Ulumudin" />
+        </div>
+      </div>
+
+      <h2 class="phase-title">Fase 1: Pengenalan Konsep VPS &amp; Cloud</h2>
+      <p class="desc">
+        Jelaskan secara singkat pemahaman Anda mengenai perbedaan layanan berikut dengan mengisi kotak yang tersedia.
+      </p>
+
+      <div class="cards-2x2">
+        <div class="box-card">
+          <h3>Shared Hosting</h3>
+          <textarea>Layanan hosting di mana satu server fisik digunakan bersama-sama oleh banyak pengguna (berbagi CPU, RAM, dan penyimpanan). Biaya paling murah dan mudah dikelola, tetapi performa terbatas dan tidak memiliki akses root ke sistem.</textarea>
+        </div>
+        <div class="box-card">
+          <h3>Dedicated Server</h3>
+          <textarea>Layanan penyewaan satu server fisik secara penuh khusus untuk satu pengguna saja. Memberikan performa maksimal, keamanan tinggi, serta kontrol penuh atas hardware dan OS, namun biayanya jauh lebih mahal.</textarea>
+        </div>
+        <div class="box-card">
+          <h3>Amazon Lightsail</h3>
+          <textarea>Layanan VPS dari AWS yang dirancang sederhana dengan paket harga tetap bulanan (sudah mencakup compute, storage, dan transfer data). Cocok untuk deployment cepat seperti website atau aplikasi skala kecil-menengah.</textarea>
+        </div>
+        <div class="box-card">
+          <h3>Amazon EC2</h3>
+          <textarea>Amazon Elastic Compute Cloud adalah layanan server virtual (IaaS) AWS dengan fleksibilitas dan skalabilitas tinggi. Pengguna bebas mengatur spesifikasi CPU, RAM, jaringan, keamanan, serta skema pembayaran pay-as-you-go.</textarea>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        <span>Modul Praktik AWS Cloud - Fase 1</span>
+        <span>Halaman 1 dari 1</span>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    function resetForm() {
+      if (confirm("Apakah Anda yakin ingin menghapus semua isian jawaban pada Fase 1 ini?")) {
+        document.querySelectorAll("textarea").forEach((ta) => {
+          ta.value = "";
+        });
+      }
+    }
+  </script>
+</body>
+</html>
